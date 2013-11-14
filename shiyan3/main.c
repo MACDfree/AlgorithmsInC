@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
 #define bool char
 
 typedef struct IOtable
 {
-    char *pName;
+    char pName[20];
     int cylinderNum;    //0-199
     int trackNum;       //0-19
     int blockNum;       //0-7
@@ -20,17 +21,7 @@ IOtable *head=NULL,*endless=NULL;
 
 bool get_rand()
 {
-    double r;
-    srand((unsigned int)time(0));
-    r = rand() % 100 / 100.0;
-    if((r-0.5)<0)
-    {
-        return 0;
-    }
-    else
-    {
-        return 1;
-    }
+    return rand() < RAND_MAX/2;
 }
 
 void init()
@@ -38,7 +29,7 @@ void init()
     IOtable *p, *t;
 
     p = (IOtable *)malloc(sizeof(IOtable));
-    p->pName = "p1";
+    strcpy(p->pName, "p1");
     p->cylinderNum = 100;
     p->trackNum = 0;
     p->blockNum = 0;
@@ -47,7 +38,7 @@ void init()
     t = p;
 
     p = (IOtable *)malloc(sizeof(IOtable));
-    p->pName = "p2";
+    strcpy(p->pName, "p2");
     p->cylinderNum = 150;
     p->trackNum = 0;
     p->blockNum = 1;
@@ -56,7 +47,7 @@ void init()
     t=p;
 
     p = (IOtable *)malloc(sizeof(IOtable));
-    p->pName = "p3";
+    strcpy(p->pName, "p3");
     p->cylinderNum = 60;
     p->trackNum = 1;
     p->blockNum = 5;
@@ -65,7 +56,7 @@ void init()
     t=p;
 
     p = (IOtable *)malloc(sizeof(IOtable));
-    p->pName = "p4";
+    strcpy(p->pName, "p4");
     p->cylinderNum = 60;
     p->trackNum = 7;
     p->blockNum = 2;
@@ -74,7 +65,7 @@ void init()
     t=p;
 
     p = (IOtable *)malloc(sizeof(IOtable));
-    p->pName = "p5";
+    strcpy(p->pName, "p5");
     p->cylinderNum = 20;
     p->trackNum = 6;
     p->blockNum = 2;
@@ -83,7 +74,7 @@ void init()
     t=p;
 
     p = (IOtable *)malloc(sizeof(IOtable));
-    p->pName = "p6";
+    strcpy(p->pName, "p6");
     p->cylinderNum = 14;
     p->trackNum = 3;
     p->blockNum = 5;
@@ -105,9 +96,9 @@ void request()
         {
             p = (IOtable *)malloc(sizeof(IOtable));
             printf("Input process name: ");
-            scanf("%s", p->pName);
+            scanf("%s%*c", p->pName);
             printf("Input address(cylinderNum trackNum blockNum): ");
-            scanf("%d %d %d", &(p->cylinderNum), &(p->trackNum), &(p->blockNum));
+            scanf("%d %d %d%*c", &(p->cylinderNum), &(p->trackNum), &(p->blockNum));
             if(endless)
             {
                 endless->next = p;
@@ -146,9 +137,13 @@ bool close()
         t = (p->cylinderNum - g_current_cylinder) * g_dir;
         if(t>=0 && t<=minCylinder)
         {
-            minCylinder = t;
             s=abs(p->blockNum-g_current_block);
-            if(s<minBlock)
+            if(t<minCylinder)
+            {
+                minCylinder = t;
+                minBlock = s;
+            }
+            if(s<=minBlock)
             {
                 minBlock = s;
                 result = p;
@@ -207,7 +202,14 @@ int main()
     init();
     while(head!=NULL)
     {
-        csan();
+        if(get_rand())
+        {
+            request();
+        }
+        else
+        {
+            csan();
+        }
     }
     return 0;
 }

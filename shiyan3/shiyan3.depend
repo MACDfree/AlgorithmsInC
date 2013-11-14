@@ -1,6 +1,7 @@
 # depslib dependency file v1.0
-1384357143 source:e:\算法c语言实现\shiyan3\main.c
+1384429934 source:e:\算法c语言实现\shiyan3\main.c
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
+	<string.h>
 
