@@ -156,7 +156,7 @@ bool close()
         g_current_cylinder = result->cylinderNum;
         g_current_track = result->trackNum;
         g_current_block = result->blockNum;
-        printf("run: %s\tcylinder: %d\ttrack: %d\tblock: %d\ndirection: %s\n\n",
+        printf("run: %s \tcylinder: %d\ttrack: %d\tblock: %d\ndirection: %s\n\n",
                 result->pName, result->cylinderNum, result->trackNum, result->blockNum, g_dir>0?"in":"out");
         if(result->prev==NULL && result->next==NULL)
         {

@@ -3,6 +3,7 @@
 int main()
 {
     char t[10]="abcds";
-    printf("%s\n",t);
+    scanf("%s", t);
+    printf("%s \t%s", t, t);
     return 0;
 }
